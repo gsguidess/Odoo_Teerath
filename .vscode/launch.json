@@ -1,0 +1,15 @@
+{
+    "version":"0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python: Odoo18",
+            "type": "python",
+            "request": "launch",
+            "python": "${command:python.interpreterPath}",
+            "console": "integratedTerminal",
+            "program": "${workspaceRoot}\\community\\odoo-bin",
+            "args": ["--config=${workspaceRoot}\\odoo18\\odoo.conf"],
+        }
+    ]
+}

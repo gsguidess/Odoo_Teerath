@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_todo_list_form" model="ir.ui.view">
+        <field name="name">todo.list.form.view</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <form string="Todo List">
+                <sheet>
+                    <group>
+                        <header>
+                            <div style="font-size:12px;">
+                                <field name="status" widget="statusbar"/>
+                            </div>
+                            <style>
+                                .sta-btn {
+                                    font-size:12px;
+                                    width: 135px;     
+                                    padding: 10px;
+                                    gap: 0;
+                                    border: 2px solid black;
+                                    text-align: center;
+                                    background-color: white;
+                                }
+                            </style>
+                            <div style="position: absolute; left:40%;">
+                                <button name="action_button_draft" string="DRAFT" type="object" class="sta-btn" />  
+                                <button name="action_button_inprogress" string="IN PROGRESS" type="object" class="sta-btn"/>  
+                                <button name="action_button_complete" string="COMPLETE" type="object" class="sta-btn"/>
+                                <button name="action_button_done" string="DONE" type="object" class="sta-btn" invisible="all_done == False"/>
+                            </div>
+                        </header>
+                        <field name="name" readonly="status == 'complete'"/>
+                        <div class="row">
+                            <div class="col-6">
+                                <group>
+                                    <field name="tag_ids" widget="many2many_tags" readonly="status == 'complete'"/>
+                                </group>
+                            </div>
+                            <div class="col-6">
+                                <group>
+                                    <field name="start_date" readonly="status == 'complete'"/>
+                                    <field name="end_date" readonly="status == 'complete'"/>
+                                </group>
+                            </div>
+                        </div>
+                    </group>
+                        <notebook>
+                            <page string="List">
+                                <field name="line_ids" readonly="status == 'complete'">
+                                        <list editable="bottom">
+                                            <field name="name"/>
+                                            <field name="description"/>
+                                            <field name="done" invisible="parent.status == 'draft'" widget="boolean_checkbox"/>
+                                        </list>
+                                </field>
+                            </page>
+                                <page string="Attendee" >
+                                    <field name="attendee_ids" readonly="status == 'complete'">
+                                        <list editable="bottom">
+                                            <field name="user_id" string="Attendee"/>
+                                        </list>
+                                    </field>
+                                </page>
+                        </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_todo_list" model="ir.ui.view">
+        <field name="name">todo.list.view</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="tag_names" widget="tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_todo_list" model="ir.actions.act_window">
+        <field name="name">Todo Lists</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_todo_root" name="Todo Management" sequence="10"/>
+
+    <record id="action_todo_all" model="ir.actions.act_window">
+        <field name="name">All</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_todo_all" name="All"
+            parent="menu_todo_root" action="action_todo_all" sequence="1"/>
+
+    <record id="action_todo_uncomplete" model="ir.actions.act_window">
+        <field name="name">Uncomplete</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('status', '!=', 'complete')]</field>
+    </record>
+    <menuitem id="menu_todo_uncomplete" name="Uncomplete"
+            parent="menu_todo_root" action="action_todo_uncomplete" sequence="2"/>
+
+    <record id="action_todo_complete" model="ir.actions.act_window">
+        <field name="name">Complete</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('status', '=', 'complete')]</field>
+    </record>
+    <menuitem id="menu_todo_complete" name="Complete"
+            parent="menu_todo_root" action="action_todo_complete" sequence="3"/>
+</odoo>

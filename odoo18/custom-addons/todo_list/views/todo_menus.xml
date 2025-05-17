@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_todo" name="Todo List">
+        <menuitem id="menu_all" name="All" action="todo_list.action_todo_all"/>
+        <menuitem id="menu_uncomplete" name="Uncomplete" action="todo_list.action_todo_uncomplete"/>
+        <menuitem id="menu_complete" name="Complete" action="todo_list.action_todo_complete"/>
+    </menuitem>
+</odoo>
